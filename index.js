@@ -105,13 +105,8 @@ function registerListener (session, options, cb = () => {}) {
 
 const downloadWeb = async (win, url, options) => {
   const dir = options.directory || app.getPath('downloads')
-  const res = await fetch(url, { credentials: 'include' })
 
-  // 根据fetch 结果得到后缀名
-  const contentType = res.headers.get('content-type')
-  const extMatch = /^image\/(\w+)/.exec(contentType)
-  const imageExt = (extMatch && extMatch[1]) || 'png'
-  const filename = `${options.filename}.${imageExt}`
+  const filename = options.filename || url.substring(url.lastIndexOf('/') + 1)
   const originFilePath = path.join(dir, filename)
 
   const filePath = dialog.showSaveDialog(win, {
